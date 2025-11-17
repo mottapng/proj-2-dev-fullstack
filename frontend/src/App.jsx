@@ -27,19 +27,17 @@ function App() {
             <Route
               path="/search"
               element={
-                // <ProtectedRoute>
-                //   <SearchPage />
-                // </ProtectedRoute>
-                <SearchPage />
+                <ProtectedRoute>
+                  <SearchPage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/insert"
               element={
-                // <ProtectedRoute>
-                //   <InsertPage />
-                // </ProtectedRoute>
-                <InsertPage />
+                <ProtectedRoute>
+                  <InsertPage />
+                </ProtectedRoute>
               }
             />
 

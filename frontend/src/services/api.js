@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 /**
  * Configuração base do axios para comunicação com a API
@@ -8,13 +8,13 @@ import axios from 'axios';
 // URL base da API - ajuste conforme necessário
 // Usa a variável VITE_API_URL quando definida (recomendado),
 // caso contrário aponta para o backend rodando em 8000.
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 // Cria instância do axios com configuração base
 const api = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -24,7 +24,7 @@ const api = axios.create({
  */
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -54,7 +54,7 @@ api.interceptors.response.use(
  * @returns {Promise} Promise com os dados de resposta (token, user)
  */
 export const login = async (email, password) => {
-  const response = await api.post('/auth/login', {
+  const response = await api.post("/auth/login", {
     email,
     password,
   });
@@ -66,7 +66,7 @@ export const login = async (email, password) => {
  * @returns {Promise} Promise com a resposta
  */
 export const logout = async () => {
-  const response = await api.post('/auth/logout');
+  const response = await api.post("/auth/logout");
   return response.data;
 };
 
@@ -76,12 +76,12 @@ export const logout = async () => {
  * @returns {Promise} Promise com os dados dos filmes encontrados
  */
 export const searchMovies = async (query) => {
-  const response = await api.get('/movies', {
+  const response = await api.get("/movies", {
     params: {
       query: query.trim(),
     },
   });
-  // backend may return { results: [...] } or { movies: [...] } or an array
+
   const data = response.data;
   if (Array.isArray(data)) return data;
   return data.results || data.movies || data.data || [];
@@ -93,10 +93,9 @@ export const searchMovies = async (query) => {
  * @returns {Promise} Promise com os dados do filme criado
  */
 export const insertMovie = async (movieData) => {
-  const response = await api.post('/movies', movieData);
+  const response = await api.post("/movies", movieData);
   return response.data;
 };
 
 // Exporta a instância do axios para uso em outros serviços
 export default api;
-

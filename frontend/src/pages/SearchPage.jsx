@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import { searchMovies } from "../services/api";
 import Toast from "../components/Toast";
+import { sanitizeInput } from "../utils/sanitize";
 
-/**
- * Página de Busca de Filmes
- * UI moderna e elegante para buscar e exibir filmes
- */
 const SearchPage = () => {
   // Estados
   const [query, setQuery] = useState("");
@@ -190,7 +187,7 @@ const SearchPage = () => {
                       placeholder="Digite o nome do filme, diretor, gênero..."
                       value={query}
                       onChange={(e) => {
-                        setQuery(e.target.value);
+                        setQuery(sanitizeInput(e.target.value, 200));
                         setError("");
                       }}
                       disabled={loading}

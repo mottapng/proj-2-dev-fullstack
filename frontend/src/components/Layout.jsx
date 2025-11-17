@@ -25,7 +25,6 @@ const Layout = ({ children }) => {
 
   return (
     <div style={{ margin: 0, padding: 0, width: "100%", minHeight: "100vh" }}>
-      {/* Header moderno - oculto apenas na página de login */}
       {!isLoginPage && (
         <header
           style={{
@@ -50,7 +49,6 @@ const Layout = ({ children }) => {
               gap: "1rem",
             }}
           >
-            {/* Logo/Brand */}
             <Link
               to="/"
               style={{
@@ -66,8 +64,6 @@ const Layout = ({ children }) => {
               <span style={{ fontSize: "1.5rem" }}>🎬</span>
               <span>Filmes App</span>
             </Link>
-
-            {/* Navegação */}
             <nav
               style={{
                 display: "flex",

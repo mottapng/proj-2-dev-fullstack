@@ -6,11 +6,6 @@ import { login as apiLogin } from "../services/api";
 import Toast from "../components/Toast";
 import "./LoginPage.css";
 
-/**
- * Página de Login
- * UI moderna com tema de filmes
- * Inclui validação de campos, tratamento de erros e feedback visual
- */
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);

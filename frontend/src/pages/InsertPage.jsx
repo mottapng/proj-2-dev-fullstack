@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { insertMovie } from "../services/api";
 import Toast from "../components/Toast";
+import { sanitizeInput } from "../utils/sanitize";
 
-/**
- * Página de Inserção de Filmes
- * UI moderna para adicionar novos filmes ao sistema
- */
 const InsertPage = () => {
   // Estados do formulário
   const [formData, setFormData] = useState({
@@ -27,12 +24,20 @@ const InsertPage = () => {
 
   /**
    * Função para atualizar os campos do formulário
+   * Sanitiza inputs para prevenir XSS
    */
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Sanitiza o valor antes de armazenar (exceto para campos numéricos)
+    const sanitizedValue =
+      name === "year" || name === "rating"
+        ? value
+        : sanitizeInput(value, name === "description" ? 5000 : 200);
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: sanitizedValue,
     }));
 
     // Remove erro do campo ao digitar
@@ -68,7 +73,9 @@ const InsertPage = () => {
     } else {
       const year = parseInt(formData.year);
       if (isNaN(year) || year < 1888 || year > new Date().getFullYear() + 1) {
-        newErrors.year = `Ano deve ser entre 1888 e ${new Date().getFullYear() + 1}`;
+        newErrors.year = `Ano deve ser entre 1888 e ${
+          new Date().getFullYear() + 1
+        }`;
       }
     }
 
@@ -140,7 +147,7 @@ const InsertPage = () => {
       // Sucesso
       setSuccessMessage("Filme inserido com sucesso!");
       setShowSuccessToast(true);
-      
+
       // Limpa o formulário
       setFormData({
         title: "",
@@ -308,7 +315,9 @@ const InsertPage = () => {
                 </label>
                 <input
                   type="text"
-                  className={`form-control ${errors.director ? "is-invalid" : ""}`}
+                  className={`form-control ${
+                    errors.director ? "is-invalid" : ""
+                  }`}
                   id="director"
                   name="director"
                   value={formData.director}
@@ -322,7 +331,9 @@ const InsertPage = () => {
                   }}
                 />
                 {errors.director && (
-                  <div className="invalid-feedback d-block">{errors.director}</div>
+                  <div className="invalid-feedback d-block">
+                    {errors.director}
+                  </div>
                 )}
               </div>
 
@@ -334,7 +345,9 @@ const InsertPage = () => {
                 <input
                   type="number"
                   step="0.1"
-                  className={`form-control ${errors.rating ? "is-invalid" : ""}`}
+                  className={`form-control ${
+                    errors.rating ? "is-invalid" : ""
+                  }`}
                   id="rating"
                   name="rating"
                   value={formData.rating}
@@ -350,7 +363,9 @@ const InsertPage = () => {
                   }}
                 />
                 {errors.rating && (
-                  <div className="invalid-feedback d-block">{errors.rating}</div>
+                  <div className="invalid-feedback d-block">
+                    {errors.rating}
+                  </div>
                 )}
               </div>
 
@@ -360,7 +375,9 @@ const InsertPage = () => {
                   Descrição <span className="text-danger">*</span>
                 </label>
                 <textarea
-                  className={`form-control ${errors.description ? "is-invalid" : ""}`}
+                  className={`form-control ${
+                    errors.description ? "is-invalid" : ""
+                  }`}
                   id="description"
                   name="description"
                   value={formData.description}
