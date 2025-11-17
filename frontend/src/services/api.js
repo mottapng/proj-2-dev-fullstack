@@ -6,7 +6,9 @@ import axios from 'axios';
  */
 
 // URL base da API - ajuste conforme necessário
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+// Usa a variável VITE_API_URL quando definida (recomendado),
+// caso contrário aponta para o backend rodando em 8000.
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 // Cria instância do axios com configuração base
 const api = axios.create({
@@ -76,10 +78,13 @@ export const logout = async () => {
 export const searchMovies = async (query) => {
   const response = await api.get('/movies', {
     params: {
-      query: query.trim()
-    }
+      query: query.trim(),
+    },
   });
-  return response.data;
+  // backend may return { results: [...] } or { movies: [...] } or an array
+  const data = response.data;
+  if (Array.isArray(data)) return data;
+  return data.results || data.movies || data.data || [];
 };
 
 /**
